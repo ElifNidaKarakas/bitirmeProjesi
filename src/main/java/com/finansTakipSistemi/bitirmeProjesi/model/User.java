@@ -2,6 +2,9 @@ package com.finansTakipSistemi.bitirmeProjesi.model;
 
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -16,13 +19,19 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(unique = true, nullable = false)
+    @Column()
+    @NotNull(message = "Kullanıcı adı gereklidir")
+    @Size(min = 3, max = 20, message = "Kullanıcı adı 3-20 karakter olmalıdır")
     private String username;
 
-    @Column(nullable = false)
+    @NotNull(message = "Şifre gereklidir")
+    @Size(min = 8, message = "Şifre en az 8 karakter olmalıdır")
+    @Column()
     private String password;
 
-    @Column(unique = true, nullable = false)
+    @Column(unique = true)
+    @NotNull(message = "E-posta gereklidir")
+    @Email(message = "Geçerli bir e-posta adresi girin")
     private String email;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
@@ -38,4 +47,6 @@ public class User {
     public void setEmail(String email) { this.email = email; }
     public List<Transaction> getTransactions() { return transactions; }
     public void setTransactions(List<Transaction> transactions) { this.transactions = transactions; }
+
+
 }

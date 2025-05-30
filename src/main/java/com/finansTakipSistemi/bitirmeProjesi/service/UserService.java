@@ -3,6 +3,7 @@ package com.finansTakipSistemi.bitirmeProjesi.service;
 
 import com.finansTakipSistemi.bitirmeProjesi.model.User;
 import com.finansTakipSistemi.bitirmeProjesi.repository.UserRepository;
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -19,4 +20,6 @@ public class UserService {
         return userRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("User not found"));
     }
+
+
 }

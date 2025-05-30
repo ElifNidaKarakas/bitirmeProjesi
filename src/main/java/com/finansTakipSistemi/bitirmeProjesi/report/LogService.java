@@ -1,4 +1,4 @@
-package com.finansTakipSistemi.bitirmeProjesi.util;
+package com.finansTakipSistemi.bitirmeProjesi.report;
 
 
 import org.springframework.stereotype.Service;
