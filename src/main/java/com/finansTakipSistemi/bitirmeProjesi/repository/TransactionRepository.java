@@ -9,6 +9,8 @@ import java.util.List;
 
 public interface TransactionRepository extends JpaRepository<Transaction, Long> {
     List<Transaction> findByUserAndTransactionDateBetween(User user, LocalDate start, LocalDate end);
+//belirli bir kullanıcının belirli tarih aralığındaki işlemlerini getirir.
 
     List<Transaction> findByUser(User user);
+
 }

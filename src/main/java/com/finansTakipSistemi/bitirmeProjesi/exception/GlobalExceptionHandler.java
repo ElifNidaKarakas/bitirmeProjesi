@@ -10,21 +10,37 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 import java.util.HashMap;
 import java.util.Map;
 
-// Global hata yönetici sınıfı
+/**
+ * Bu sınıf, uygulama genelindeki istisnaları merkezi bir şekilde ele alır.
+ * @RestControllerAdvice anotasyonu sayesinde tüm controller'larda geçerlidir.
+ */
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
-    // ValidationException hatalarını yönetir
+    /**
+     * ValidationException hatalarını yakalar (manuel olarak fırlatılan doğrulama hataları için).
+     * Örn: throw new ValidationException("Geçersiz veri");
+     */
     @ExceptionHandler(ValidationException.class)
     public ResponseEntity<String> handleValidationException(ValidationException ex) {
+        // Hata mesajı ve 400 Bad Request yanıtı döndürülür
         return new ResponseEntity<>(ex.getMessage(), HttpStatus.BAD_REQUEST);
     }
 
-    // Bean Validation hatalarını yönetir (örn. @NotNull, @Size gibi anotasyonlar)
+    /**
+     * Bean Validation (javax/jakarta doğrulama anotasyonları) hatalarını yakalar.
+     * Örn: @NotNull, @Size(min = 3), vb. anotasyonlar başarısız olduğunda fırlatılır.
+     */
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<Map<String, String>> handleValidationExceptions(MethodArgumentNotValidException ex) {
         Map<String, String> errors = new HashMap<>();
-        ex.getBindingResult().getFieldErrors().forEach(error -> errors.put(error.getField(), error.getDefaultMessage()));
+
+        // Her bir hata için alan adı ve mesajını alıp hata listesine ekler
+        ex.getBindingResult().getFieldErrors().forEach(error ->
+                errors.put(error.getField(), error.getDefaultMessage())
+        );
+
+        // Hatalar haritası ve 400 Bad Request döndürülür
         return new ResponseEntity<>(errors, HttpStatus.BAD_REQUEST);
     }
 }

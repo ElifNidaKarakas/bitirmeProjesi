@@ -12,14 +12,14 @@ public class UserService {
     @Autowired
     private UserRepository userRepository;
 
+    // Yeni kullanıcı kaydı oluşturur ve veritabanına kaydeder
     public User registerUser(User user) {
         return userRepository.save(user);
     }
 
+    // Verilen id'ye sahip kullanıcıyı bulur, yoksa hata fırlatır
     public User getUserById(Long id) {
         return userRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("User not found"));
     }
-
-
 }
